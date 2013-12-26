@@ -11,6 +11,10 @@ module Libv8
     def x86_64_from_byte_length
       ['foo'].pack('p').size == 8
     end
+    
+    def x86_64_from_uname
+      `uname -ra` =~ /x86_64/  
+    end
 
     def x86_64_from_arch_flag
       RbConfig::MAKEFILE_CONFIG['ARCH_FLAG'] =~ /x86_64/
@@ -25,7 +29,7 @@ module Libv8
       if rubinius?
         x86_64_from_build_cpu || x86_64_from_arch_flag
       else
-        x86_64_from_byte_length
+        x86_64_from_byte_length || x86_64_from_uname
       end
     end
 
